@@ -16,7 +16,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.target>
+      1.7</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -25,6 +26,13 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+    <!--
+    https://mvnrepository.com/artifact/com.google.googlejavaformat/google-java-format -->
+    <dependency>
+      <groupId>com.google.googlejavaformat</groupId>
+      <artifactId>google-java-format</artifactId>
+      <version>1.15.0</version>
     </dependency>
   </dependencies>
 
@@ -79,7 +87,8 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.0.0</version>
           <configuration>
-            <reportOutputDirectory>${basedir}/docs</reportOutputDirectory>
+            <reportOutputDirectory>
+              ${basedir}/docs</reportOutputDirectory>
             <destDir>page</destDir>
           </configuration>
         </plugin>
@@ -88,11 +97,48 @@
           <artifactId>maven-pdf-plugin</artifactId>
           <version>1.6.1</version>
           <configuration>
-            <reportOutputDirectory>${basedir}/docs</reportOutputDirectory>
+            <reportOutputDirectory>
+              ${basedir}/docs</reportOutputDirectory>
             <destDir>pdf</destDir>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.openrewrite.maven</groupId>
+          <artifactId>rewrite-maven-plugin</artifactId>
+          <version>4.39.0</version>
+          <configuration>
+            <activeRecipes>
+              <recipe>
+                org.openrewrite.java.cleanup.Cleanup</recipe>
+            </activeRecipes>
+          </configuration>
+          <executions>
+            <execution>
+              <id>validate</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.2.1</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>checkstyle</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
